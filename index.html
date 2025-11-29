@@ -1,40 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basic Calculator</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commit Criminals - Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
-    <div class="calculator">
-        <div class="display">
-            <input type="text" id="result" readonly>
+  <div class="app">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="#/">Commit Criminals</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#/" class="nav-link">Home</a></li>
+        <li><a href="#/chat" class="nav-link">Chat</a></li>
+        <li><a href="#/qna" class="nav-link">Q&A</a></li>
+        <li><a href="#/lost-found" class="nav-link">Lost & Found</a></li>
+      </ul>
+      <div class="auth-section">
+        <div id="auth-buttons" style="display: none;">
+          <button class="btn small primary" onclick="showAuthModal('login')">Login</button>
+          <button class="btn small secondary" onclick="showAuthModal('signup')">Sign Up</button>
         </div>
-        <div class="buttons">
-            <button onclick="clearDisplay()">C</button>
-            <button onclick="appendToDisplay('/')">/</button>
-            <button onclick="appendToDisplay('*')">*</button>
-            <button onclick="appendToDisplay('-')">-</button>
-            
-            <button onclick="appendToDisplay('7')">7</button>
-            <button onclick="appendToDisplay('8')">8</button>
-            <button onclick="appendToDisplay('9')">9</button>
-            <button onclick="appendToDisplay('+')">+</button>
-            
-            <button onclick="appendToDisplay('4')">4</button>
-            <button onclick="appendToDisplay('5')">5</button>
-            <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('.')">.</button>
-            
-            <button onclick="appendToDisplay('1')">1</button>
-            <button onclick="appendToDisplay('2')">2</button>
-            <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="appendToDisplay('0')">0</button>
-            
-            <button onclick="calculateResult()" style="grid-column: span 4;">=</button>
+        <div id="user-section" style="display: none;">
+          <span class="user-greeting">Hi, <span id="username-display"></span>!</span>
+          <button class="btn small secondary" onclick="handleLogout()">Logout</button>
         </div>
+      </div>
+    </nav>
+
+    <main class="content">
+      <!-- Home Page -->
+      <div id="page-home" class="page home">
+        <section class="hero">
+          <div class="hero-content">
+            <h1>Welcome to the Underground</h1>
+            <p>Connect, Collaborate, and Code with your fellow criminals.</p>
+            <div class="cta-buttons">
+              <button class="btn primary" data-navigate="/chat">Join Chat</button>
+              <button class="btn secondary" data-navigate="/qna">Ask Questions</button>
+            </div>
+          </div>
+        </section>
+        <section class="features">
+          <h2>Why Join Us?</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>Live Chat</h3>
+              <p>Real-time conversations with your fellow criminals.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Q&A Support</h3>
+              <p>Get help with your code from the community.</p>
+            </div>
+            <div class="feature-card">
+              <h3>Lost & Found</h3>
+              <p>Help friends find their lost items or claim what you've found.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Chat Page -->
+      <div id="page-chat" class="page chat" style="display: none;">
+        <div class="page-header">
+          <h1>Community Chat</h1>
+          <div class="chat-info">
+            <span id="chat-status">Connected</span>
+          </div>
+        </div>
+        <div class="chat-container">
+          <div id="chat-messages" class="chat-messages">
+            <div class="loading">Loading messages...</div>
+          </div>
+          <div class="chat-input-container">
+            <form id="chat-form" onsubmit="sendChatMessage(event)">
+              <input type="text" id="chat-input" placeholder="Type your message..." maxlength="500"
+                autocomplete="off" />
+              <button type="submit" class="btn primary" id="chat-send-btn">Send</button>
+            </form>
+            <div class="chat-hint">
+              <small>Anyone can send messages. Messages are limited to 1000 total.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="page-qna" class="page qna" style="display: none;">
+        <div class="page-header">
+          <h1>Q&A Section</h1>
+          <button class="btn primary" onclick="showCreateModal('question')">+ Ask Question</button>
+        </div>
+        <p>Ask questions and get answers.</p>
+        <div id="questions-list" class="question-list">
+          <div class="loading">Loading questions...</div>
+        </div>
+      </div>
+
+      <!-- Lost & Found Page -->
+      <div id="page-lost-found" class="page lost-found" style="display: none;">
+        <div class="page-header">
+          <h1>Lost & Found</h1>
+          <button class="btn primary" onclick="showCreateModal('lost-found')">+ Report Item</button>
+        </div>
+        <p>Help your friends find their lost items or claim what you've found.</p>
+
+        <div class="tabs">
+          <button class="tab active" data-tab="lost">Lost Items</button>
+          <button class="tab" data-tab="found">Found Items</button>
+        </div>
+
+        <div class="items-container">
+          <div id="lost-items" class="items-grid">
+            <div class="loading">Loading lost items...</div>
+          </div>
+          <div id="found-items" class="items-grid" style="display: none;">
+            <div class="loading">Loading found items...</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeAuthModal()">&times;</span>
+      <h2 id="auth-modal-title">Login</h2>
+      <form id="auth-form" onsubmit="handleAuth(event)">
+        <div class="form-group" id="username-group" style="display: none;">
+          <label for="auth-username">Username</label>
+          <input type="text" id="auth-username" placeholder="Choose a username" minlength="3" maxlength="20" />
+          <small class="form-hint">3-20 characters, letters, numbers, and underscores only</small>
+        </div>
+        <div class="form-group">
+          <label for="auth-email">Email</label>
+          <input type="email" id="auth-email" required placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" minlength="6"
+            autocomplete="current-password" />
+          <small class="form-hint" id="password-hint" style="display: none;">Password must be at least 6
+            characters</small>
+        </div>
+        <div class="error-message" id="auth-error"></div>
+        <button type="submit" class="btn primary full-width" id="auth-submit-btn">
+          <span id="auth-submit-text">Login</span>
+          <span id="auth-loading" style="display: none;">Processing...</span>
+        </button>
+        <p class="auth-switch">
+          <span id="auth-switch-text">Don't have an account?</span>
+          <a href="#" onclick="toggleAuthMode(event)">Sign up</a>
+        </p>
+      </form>
     </div>
-    <script src="script.js"></script>
+  </div>
+
+  <!-- Create Content Modal -->
+  <div id="create-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeCreateModal()">&times;</span>
+      <h2 id="create-modal-title">Create New</h2>
+      <form id="create-form" onsubmit="handleCreateContent(event)">
+        <div class="form-group">
+          <label for="create-title">Title</label>
+          <input type="text" id="create-title" required placeholder="Enter title" />
+        </div>
+        <div class="form-group" id="create-content-group">
+          <label for="create-content">Content</label>
+          <textarea id="create-content" rows="4" required placeholder="Enter content"></textarea>
+        </div>
+        <div class="form-group" id="create-type-group" style="display: none;">
+          <label for="create-type">Type</label>
+          <select id="create-type">
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+          </select>
+        </div>
+        <div class="form-group" id="create-contact-group" style="display: none;">
+          <label for="create-contact">Contact</label>
+          <input type="text" id="create-contact" placeholder="@username or contact info" />
+        </div>
+        <div class="error-message" id="create-error"></div>
+        <button type="submit" class="btn primary full-width">Create</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
+
 </html>
