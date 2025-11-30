@@ -1,203 +1,301 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Commit Criminals - Community</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <!-- Supabase Client Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Circle Up - AI Enabled</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+  <div class="bg"></div>
+
+  <header class="nav">
+    <div class="brand" onclick="navigateTo('/')" style="cursor: pointer;">Circle<strong>Up</strong></div>
+    <div class="nav-links" style="display: none;">
+      <a href="#/lost-found" onclick="navigateTo('/lost-found')">Lost & Found</a>
+      <a href="#/chat" onclick="navigateTo('/chat')">Circle Chat</a>
+    </div>
+    <div class="nav-right">
+      <div id="auth-buttons" style="display: flex; gap: 10px;">
+        <a href="#/login" onclick="navigateTo('/login')" class="pill ghost" style="text-decoration: none;">Log in</a>
+        <a href="#/login" onclick="navigateTo('/login')" class="pill primary" style="text-decoration: none;">Sign up</a>
+      </div>
+      <div id="user-section" style="display: none; align-items: center; gap: 15px;">
+        <span id="username-display" style="color: white; font-weight: 600;"></span>
+        <button onclick="handleLogout()" class="pill ghost" style="text-decoration: none; cursor: pointer;">Log
+          out</button>
+      </div>
+    </div>
+  </header>
+
   <div class="app">
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="logo">
-        <a href="#/">Commit Criminals</a>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#/" class="nav-link">Home</a></li>
-        <li><a href="#/chat" class="nav-link">Chat</a></li>
-        <li><a href="#/qna" class="nav-link">Q&A</a></li>
-        <li><a href="#/lost-found" class="nav-link">Lost & Found</a></li>
-      </ul>
-      <div class="auth-section">
-        <div id="auth-buttons" style="display: none;">
-          <button class="btn small primary" onclick="showAuthModal('login')">Login</button>
-          <button class="btn small secondary" onclick="showAuthModal('signup')">Sign Up</button>
+    <div id="page-home" class="page">
+      <!-- Landing (unchanged) -->
+      <section class="hero" id="hero-content">
+        <div>
+          <h1 class="h-title">Post it. Search it. Find it.<br />Circle Chat</h1>
+          <p class="h-sub">One place to recover lost items, connect with peers, and solve problems together — anytime,
+            anywhere.</p>
         </div>
-        <div id="user-section" style="display: none;">
-          <span class="user-greeting">Hi, <span id="username-display"></span>!</span>
-          <button class="btn small secondary" onclick="handleLogout()">Logout</button>
-        </div>
-      </div>
-    </nav>
-
-    <main class="content">
-      <!-- Home Page -->
-      <div id="page-home" class="page home">
-        <section class="hero">
-          <div class="hero-content">
-            <h1>Welcome to the Underground</h1>
-            <p>Connect, Collaborate, and Code with your fellow criminals.</p>
-            <div class="cta-buttons">
-              <button class="btn primary" data-navigate="/chat">Join Chat</button>
-              <button class="btn secondary" data-navigate="/qna">Ask Questions</button>
+        <div class="shape-wrap">
+          <div class="stack">
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="disc"></div>
+            <div class="iris left">
+              <div class="pupil"></div>
+            </div>
+            <div class="iris right">
+              <div class="pupil"></div>
             </div>
           </div>
-        </section>
-        <section class="features">
-          <h2>Why Join Us?</h2>
-          <div class="feature-grid">
-            <div class="feature-card">
-              <h3>Live Chat</h3>
-              <p>Real-time conversations with your fellow criminals.</p>
-            </div>
-            <div class="feature-card">
-              <h3>Q&A Support</h3>
-              <p>Get help with your code from the community.</p>
-            </div>
-            <div class="feature-card">
-              <h3>Lost & Found</h3>
-              <p>Help friends find their lost items or claim what you've found.</p>
-            </div>
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
-      <!-- Chat Page -->
-      <div id="page-chat" class="page chat" style="display: none;">
-        <div class="page-header">
+      <!-- Other sections (enhanced) -->
+      <section class="action-section" id="action-content">
+        <div class="chat-bubble bubble1"></div>
+        <div class="chat-bubble bubble2"></div>
+        <div class="chat-bubble bubble3"></div>
+        <div class="chat-bubble bubble4"></div>
+        <div class="chat-bubble bubble5"></div>
+        <div class="chat-bubble bubble1"></div>
+        <div class="chat-bubble bubble2"></div>
+        <div class="chat-bubble bubble3"></div>
+        <div class="chat-bubble bubble4"></div>
+        <div class="chat-bubble bubble5"></div>
+        <div class="chat-bubble bubble1"></div>
+        <div class="chat-bubble bubble2"></div>
+        <div class="chat-bubble bubble3"></div>
+        <div class="chat-bubble bubble4"></div>
+        <div class="chat-bubble bubble5"></div>
+        <div class="action reveal">
+          <div class="icon-box add-icon">+</div> Add
+        </div>
+        <div class="action reveal">
+          <div class="icon-box send-icon">✈️</div> Send
+        </div>
+        <div class="action reveal">
+          <div class="icon-box exchange-icon">⇄</div> Exchange
+        </div>
+      </section>
+      <!--add links to lost and found and circle chat and Question and ansewer-->
+
+      <!-- Quick Access Links -->
+      <section id="quick-access" class="section">
+        <p class="kicker">Quick Access</p>
+        <h2 class="title">Jump Right In</h2>
+        <div class="quick-links">
+          <a href="#/chat" class="quick-link-card reveal">
+            <div class="quick-icon">💬</div>
+            <h3>Circle Chat</h3>
+            <p>Join the community conversation</p>
+          </a>
+          <a href="#/chat" onclick="setTimeout(() => switchChatTab('qa'), 100)" class="quick-link-card reveal">
+            <div class="quick-icon">❓</div>
+            <h3>Q & A</h3>
+            <p>Ask questions, get answers</p>
+          </a>
+          <a href="#/lost-found" class="quick-link-card reveal">
+            <div class="quick-icon">🔍</div>
+            <h3>Lost & Found</h3>
+            <p>Report or find lost items</p>
+          </a>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-content">
+          <h2>CircleUp Community</h2>
+          <p>Stay connected. Share ideas. Build together.</p>
+          <div class="socials"><a href="#">🌐</a><a href="#">💼</a><a href="#">🐦</a><a href="#">📸</a></div>
+          <div class="footer-bottom">©️ 2025 CircleUp. All rights reserved.</div>
+        </div>
+      </footer>
+    </div> <!-- End page-home -->
+
+    <!-- Login Page -->
+    <div id="page-login" class="page" style="display: none;">
+      <div class="login-bg-glow"></div>
+      <a href="#/" class="back-link">← Back to Home</a>
+
+      <div class="auth-container">
+        <div class="auth-header">
+          <h1 id="page-title">Welcome Back</h1>
+          <p id="page-subtitle">Enter your details to access your account</p>
+        </div>
+
+        <form id="auth-form">
+          <div class="form-group" id="username-group" style="display: none;">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Choose a username">
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" required placeholder="name@example.com">
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" required placeholder="••••••••">
+            <small id="password-hint" style="display: none; color: rgba(255,255,255,0.5); margin-top: 5px;">Must be
+              at least 6 characters</small>
+          </div>
+
+          <div id="error-msg" style="color: #ef4444; margin-bottom: 20px; font-size: 14px; text-align: center;"></div>
+
+          <button type="submit" class="btn primary" id="submit-btn" style="width: 100%;">
+            <span id="btn-text">Sign In</span>
+            <span id="loading-text" style="display: none;">Processing...</span>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <span id="switch-text">Don't have an account?</span>
+          <a id="switch-mode">Sign up</a>
+        </div>
+      </div>
+    </div>
+    <!-- Chat Page -->
+    <div id="page-chat" class="page" style="display: none;">
+      <div class="chat-container">
+        <div class="chat-header">
           <h1>Community Chat</h1>
-          <div class="chat-info">
-            <span id="chat-status">Connected</span>
+          <p>Connect with everyone on campus</p>
+          <div class="lf-tabs">
+            <button class="tab-btn active" onclick="switchChatTab('chat')">Chat</button>
+            <button class="tab-btn" onclick="switchChatTab('qa')">Q/A</button>
           </div>
         </div>
-        <div class="chat-container">
-          <div id="chat-messages" class="chat-messages">
-            <div class="loading">Loading messages...</div>
+
+        <!-- Chat View -->
+        <div id="chat-view">
+          <div id="chat-messages" class="chat-messages-area">
+            <!-- Messages will be loaded here -->
           </div>
-          <div class="chat-input-container">
-            <form id="chat-form" onsubmit="sendChatMessage(event)">
-              <input type="text" id="chat-input" placeholder="Type your message..." maxlength="500"
-                autocomplete="off" />
-              <button type="submit" class="btn primary" id="chat-send-btn">Send</button>
-            </form>
-            <div class="chat-hint">
-              <small>Anyone can send messages. Messages are limited to 1000 total.</small>
+          <form class="chat-input-area" onsubmit="sendChatMessage(event)">
+            <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+            <button type="submit" id="chat-send-btn" class="btn primary">Send</button>
+          </form>
+        </div>
+
+        <!-- Q/A View -->
+        <div id="qa-view" style="display: none;">
+          <div style="padding: 20px; text-align: center;">
+            <button onclick="openCreateModal('question')" class="btn primary">+ Ask Question</button>
+          </div>
+          <div id="questions-list" class="items-list">
+            <!-- Questions will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Lost & Found Page -->
+    <div id="page-lost-found" class="page" style="display: none;">
+      <div class="chat-container">
+        <div class="chat-header">
+          <h1>Lost & Found</h1>
+          <p>Report lost items or help others find theirs</p>
+          <div class="lf-tabs">
+            <button class="tab-btn active" onclick="switchLostFoundTab('lost')">Lost Items</button>
+            <button class="tab-btn" onclick="switchLostFoundTab('found')">Found Items</button>
+          </div>
+          <button onclick="openCreateModal('lost-found')" class="btn small primary" style="margin-top: 10px;">+ Report
+            Item</button>
+        </div>
+        <div class="lf-container">
+          <div id="lost-view" class="lf-view">
+            <div id="lost-items" class="items-list">
+              <!-- Lost items loaded here -->
+            </div>
+          </div>
+          <div id="found-view" class="lf-view" style="display: none;">
+            <div id="found-items" class="items-list">
+              <!-- Found items loaded here -->
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-
-      <div id="page-qna" class="page qna" style="display: none;">
-        <div class="page-header">
-          <h1>Q&A Section</h1>
-          <button class="btn primary" onclick="showCreateModal('question')">+ Ask Question</button>
-        </div>
-        <p>Ask questions and get answers.</p>
-        <div id="questions-list" class="question-list">
-          <div class="loading">Loading questions...</div>
-        </div>
-      </div>
-
-      <!-- Lost & Found Page -->
-      <div id="page-lost-found" class="page lost-found" style="display: none;">
-        <div class="page-header">
-          <h1>Lost & Found</h1>
-          <button class="btn primary" onclick="showCreateModal('lost-found')">+ Report Item</button>
-        </div>
-        <p>Help your friends find their lost items or claim what you've found.</p>
-
-        <div class="tabs">
-          <button class="tab active" data-tab="lost">Lost Items</button>
-          <button class="tab" data-tab="found">Found Items</button>
-        </div>
-
-        <div class="items-container">
-          <div id="lost-items" class="items-grid">
-            <div class="loading">Loading lost items...</div>
+    <!-- Create Modal (Shared) -->
+    <div id="create-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <h2 id="create-modal-title">Report Item</h2>
+        <form id="create-form" onsubmit="handleCreateContent(event)">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="create-title" required placeholder="e.g., Blue Wallet">
           </div>
-          <div id="found-items" class="items-grid" style="display: none;">
-            <div class="loading">Loading found items...</div>
+
+          <div class="form-group" id="create-type-group">
+            <label>Type</label>
+            <select id="create-type">
+              <option value="lost">Lost</option>
+              <option value="found">Found</option>
+            </select>
           </div>
-        </div>
+
+          <div class="form-group" id="create-content-group">
+            <label>Description</label>
+            <textarea id="create-content" rows="4" required placeholder="Describe the item..."></textarea>
+          </div>
+
+          <div class="form-group" id="create-contact-group">
+            <label>Contact Info</label>
+            <input type="text" id="create-contact" placeholder="Phone, Email, or 'DM me'">
+          </div>
+
+          <div class="form-group" id="create-image-group">
+            <label>Image (Optional)</label>
+            <input type="file" id="create-image" accept="image/*">
+            <div id="image-preview"></div>
+          </div>
+
+          <div id="create-error" class="error-msg"></div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn secondary" onclick="closeCreateModal()">Cancel</button>
+            <button type="submit" class="btn primary">Create</button>
+          </div>
+        </form>
       </div>
-    </main>
+    </div>
+  </div> <!-- End .app -->
+
+  <div class="dock">
+    <div class="item" onclick="navigateTo('/lost-found')">Lost & Found</div>
+    <div class="item" onclick="navigateTo('/chat')">Circle Chat</div>
+    <div class="item" id="chatbot-btn">AI Chatbot</div>
   </div>
 
-  <!-- Auth Modal -->
-  <div id="auth-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeAuthModal()">&times;</span>
-      <h2 id="auth-modal-title">Login</h2>
-      <form id="auth-form" onsubmit="handleAuth(event)">
-        <div class="form-group" id="username-group" style="display: none;">
-          <label for="auth-username">Username</label>
-          <input type="text" id="auth-username" placeholder="Choose a username" minlength="3" maxlength="20" />
-          <small class="form-hint">3-20 characters, letters, numbers, and underscores only</small>
-        </div>
-        <div class="form-group">
-          <label for="auth-email">Email</label>
-          <input type="email" id="auth-email" required placeholder="your@email.com" autocomplete="email" />
-        </div>
-        <div class="form-group">
-          <label for="auth-password">Password</label>
-          <input type="password" id="auth-password" required placeholder="••••••••" minlength="6"
-            autocomplete="current-password" />
-          <small class="form-hint" id="password-hint" style="display: none;">Password must be at least 6
-            characters</small>
-        </div>
-        <div class="error-message" id="auth-error"></div>
-        <button type="submit" class="btn primary full-width" id="auth-submit-btn">
-          <span id="auth-submit-text">Login</span>
-          <span id="auth-loading" style="display: none;">Processing...</span>
-        </button>
-        <p class="auth-switch">
-          <span id="auth-switch-text">Don't have an account?</span>
-          <a href="#" onclick="toggleAuthMode(event)">Sign up</a>
-        </p>
-      </form>
+  <div class="chatbot-box" id="chatbot">
+    <div class="chatbot-header"><span>CircleUp AI</span></div>
+    <div class="chatbot-messages" id="ai-chat-messages"></div>
+    <div class="chatbot-input"><input type="text" id="ai-chat-input" placeholder="Ask..."><button
+        id="ai-chat-send">Send</button></div>
+    <div class="config-modal" id="config-modal">
+      <h3>Enable Real AI</h3>
+      <p>Get free key from <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.</p>
+      <input type="password" id="api-key-input" placeholder="Paste API key">
+      <button class="save-btn" id="save-key">Save</button><button class="cancel-btn" id="cancel-config">Cancel</button>
     </div>
   </div>
 
-  <!-- Create Content Modal -->
-  <div id="create-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeCreateModal()">&times;</span>
-      <h2 id="create-modal-title">Create New</h2>
-      <form id="create-form" onsubmit="handleCreateContent(event)">
-        <div class="form-group">
-          <label for="create-title">Title</label>
-          <input type="text" id="create-title" required placeholder="Enter title" />
-        </div>
-        <div class="form-group" id="create-content-group">
-          <label for="create-content">Content</label>
-          <textarea id="create-content" rows="4" required placeholder="Enter content"></textarea>
-        </div>
-        <div class="form-group" id="create-type-group" style="display: none;">
-          <label for="create-type">Type</label>
-          <select id="create-type">
-            <option value="lost">Lost</option>
-            <option value="found">Found</option>
-          </select>
-        </div>
-        <div class="form-group" id="create-contact-group" style="display: none;">
-          <label for="create-contact">Contact</label>
-          <input type="text" id="create-contact" placeholder="@username or contact info" />
-        </div>
-        <div class="error-message" id="create-error"></div>
-        <button type="submit" class="btn primary full-width">Create</button>
-      </form>
-    </div>
-  </div>
-
+  <div class="cursor-light" id="cursorLight"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 

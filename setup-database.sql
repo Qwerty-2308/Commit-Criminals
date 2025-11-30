@@ -34,6 +34,16 @@ CREATE TABLE IF NOT EXISTS public.questions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Question Replies Table
+CREATE TABLE IF NOT EXISTS public.question_replies (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    question_id UUID REFERENCES public.questions(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    author_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    author_username TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Lost & Found Items Table
 CREATE TABLE IF NOT EXISTS public.lost_found_items (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -41,9 +51,18 @@ CREATE TABLE IF NOT EXISTS public.lost_found_items (
     description TEXT NOT NULL,
     type TEXT NOT NULL CHECK (type IN ('lost', 'found')),
     contact TEXT NOT NULL,
+    image_url TEXT,
     author_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Add image_url column if it doesn't exist (for schema updates)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'lost_found_items' AND column_name = 'image_url') THEN
+        ALTER TABLE public.lost_found_items ADD COLUMN image_url TEXT;
+    END IF;
+END $$;
 
 -- User Profiles Table (for storing usernames)
 CREATE TABLE IF NOT EXISTS public.user_profiles (
@@ -56,6 +75,7 @@ CREATE TABLE IF NOT EXISTS public.user_profiles (
 ALTER TABLE public.chat_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.questions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.question_replies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lost_found_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_profiles ENABLE ROW LEVEL SECURITY;
 
@@ -104,6 +124,12 @@ CREATE POLICY "Anyone can view questions" ON public.questions FOR SELECT USING (
 CREATE POLICY "Authenticated users can create questions" ON public.questions FOR INSERT WITH CHECK (auth.uid() = author_id);
 CREATE POLICY "Users can update their own questions" ON public.questions FOR UPDATE USING (auth.uid() = author_id);
 CREATE POLICY "Users can delete their own questions" ON public.questions FOR DELETE USING (auth.uid() = author_id);
+
+-- RLS Policies for question_replies
+CREATE POLICY "Anyone can view replies" ON public.question_replies FOR SELECT USING (true);
+CREATE POLICY "Authenticated users can create replies" ON public.question_replies FOR INSERT WITH CHECK (auth.uid() = author_id);
+CREATE POLICY "Users can update their own replies" ON public.question_replies FOR UPDATE USING (auth.uid() = author_id);
+CREATE POLICY "Users can delete their own replies" ON public.question_replies FOR DELETE USING (auth.uid() = author_id);
 
 -- RLS Policies for lost_found_items
 CREATE POLICY "Anyone can view lost/found items" ON public.lost_found_items FOR SELECT USING (true);
